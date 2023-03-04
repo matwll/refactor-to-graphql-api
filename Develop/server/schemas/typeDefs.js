@@ -9,12 +9,12 @@ const typeDefs = `#graphql
 
   type Book {
     _id: ID
-    bookId: 
+    bookId: String
     authors: String
     description: String
     title: String
-    image: 
-    link: 
+    image: String
+    link: String
   }
 
   type Auth {
@@ -23,11 +23,14 @@ const typeDefs = `#graphql
   }
 
   type Query {
-
+    me: [User]
   }
 
   type Mutation {
- 
+    login(email: String!, password: String!): Auth
+    addUser(username: String!, email: String!, password: String!): Auth
+    saveBook(): User
+    removeBook(bookId: String!): User
 `;
 
 module.exports = typeDefs;
