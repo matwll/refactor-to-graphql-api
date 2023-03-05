@@ -10,7 +10,7 @@ const typeDefs = `#graphql
   type Book {
     _id: ID
     bookId: String
-    authors: String
+    authors: [String]
     description: String
     title: String
     image: String
@@ -23,7 +23,7 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    me: [User]
+    me(userName: String!): User
   }
 
   type Mutation {
