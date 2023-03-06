@@ -40,8 +40,12 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    saveBook: {},
-    removeBook: {},
+    saveBook: async () => {
+
+    },
+    removeBook: async () => {
+        
+    },
   },
 };
 
