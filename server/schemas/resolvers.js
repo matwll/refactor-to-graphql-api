@@ -40,11 +40,24 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    saveBook: async () => {
-
+    saveBook: async (parent, { username, bookInfo }) => {
+      const book = await User.findOneAndUpdate(
+        { username: username },
+        {
+          $addToSet: {
+            books: { ...bookInfo },
+          },
+        },
+        {
+          new: true,
+        }
+      );
+      return user;
     },
-    removeBook: async () => {
-        
+    removeBook: async (parent, { bookId }) => {
+      const book = await Book.findOneAndDelete({});
+
+      return user;
     },
   },
 };
