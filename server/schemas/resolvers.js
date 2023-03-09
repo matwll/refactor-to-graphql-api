@@ -1,5 +1,5 @@
 const { GraphQLError } = require("graphql");
-const { User, Book } = require("../models");
+const { User, bookInfo } = require("../models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
@@ -40,24 +40,27 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    saveBook: async (parent, { username, bookInfo }) => {
-      const book = await User.findOneAndUpdate(
-        { username: username },
-        {
-          $addToSet: {
-            books: { ...bookInfo },
-          },
-        },
-        {
-          new: true,
-        }
-      );
-      return user;
+    saveBook: async (parent, { bookInfo }, context) => {
+      if (context.user) {
+        // reach into mongo to find and update that user
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id }, // find the user whose _id is users id
+          { $addToSet: { savedBooks: bookInfo } }, // modify the data
+          { new: true, runValidators: true } // some config parameters
+        );
+        // send a response back to the client
+        return updatedUser;
+      }
     },
-    removeBook: async (parent, { bookId }) => {
-      const book = await Book.findOneAndDelete({});
-
-      return user;
+    removeBook: async (parent, { bookId }, context) => {
+      if (context.user) {
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { savedBooks: { bookId: bookId } } },
+          { new: true }
+        );
+        return updatedUser;
+      }
     },
   },
 };
