@@ -1,11 +1,12 @@
 const { GraphQLError } = require("graphql");
-const { User, bookInfo } = require("../models");
+const { User, Book, BookInfo } = require("../models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
-    me: async (parent, { username }) => {
-      return User.fineOne({ username }).populate("savedBooks");
+    me: async (parent, arg, context) => {
+      console.log(context);
+      return User.fineOne({ _id: context.user._id }).populate("savedBooks");
     },
   },
 

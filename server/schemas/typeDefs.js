@@ -9,12 +9,12 @@ const typeDefs = `#graphql
 
   type Book {
     _id: ID
+    bookId: String
     authors: [String]
     description: String
-    bookId: String
+    title: String
     image: String
     link: String
-    title: String
   }
 
   input BookInfo {
@@ -32,7 +32,7 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    me(userName: String!): User
+    me: User
   }
 
   type Mutation {
@@ -40,6 +40,7 @@ const typeDefs = `#graphql
     addUser(username: String!, email: String!, password: String!): Auth
     saveBook(bookInfo: BookInfo!): User
     removeBook(bookId: String!): User
+  }
 `;
 
 module.exports = typeDefs;
