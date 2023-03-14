@@ -8,50 +8,20 @@ import {
   Button,
 } from "react-bootstrap";
 
-import { deleteBook } from "../utils/API";
 import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
 import { REMOVE_BOOK } from "../utils/mutation";
 import { GET_ME } from "../utils/queries";
 
 const SavedBooks = () => {
-  const [userData, setUserData] = useState({});
+  const { loading, data, error } = useQuery(GET_ME);
+  const [removeBook, { error: removeBookErr }] = useMutation(REMOVE_BOOK);
 
-  const { loading, data } = useQuery(GET_ME);
-
-  // use this to determine if `useEffect()` hook needs to run again
-  const userDataLength = Object.keys(userData).length;
-
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-        if (!token) {
-          return false;
-        }
-
-        const response = await getMe(token);
-
-        if (!response.ok) {
-          throw new Error("something went wrong!");
-        }
-
-        const user = await response.json();
-        setUserData(user);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    getUserData();
-  }, [userDataLength]);
+  const userData = data;
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-    const [removeBook, { error }] = useMutation(REMOVE_BOOK);
 
     if (!token) {
       return false;
@@ -63,7 +33,7 @@ const SavedBooks = () => {
       if (!response.ok) {
         throw new Error("something went wrong!");
       }
-
+      //look at fixing lines 37-39
       const updatedUser = await response.json();
       setUserData(updatedUser);
       // upon success, remove book's id from localStorage
@@ -74,8 +44,11 @@ const SavedBooks = () => {
   };
 
   // if data isn't here yet, say so
-  if (!userDataLength) {
+  if (loading) {
     return <h2>LOADING...</h2>;
+  }
+  if (error) {
+    return <h2>There is an error.</h2>;
   }
 
   return (

@@ -1,6 +1,6 @@
 const { GraphQLError } = require("graphql");
 const { User, Book, BookInfo } = require("../models");
-const { signToken } = require("../utils/auth");
+const { signToken } = require("../../client/src/utils/auth");
 
 const resolvers = {
   Query: {
