@@ -11,7 +11,7 @@ const resolvers = {
 
   Mutation: {
     login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email, password });
 
       if (!user) {
         throw new GraphQLError("No profile with this email found!", {
@@ -36,16 +36,20 @@ const resolvers = {
       return { token, user };
     },
     addUser: async (parent, { username, email, password }) => {
+      console.log({ username, email, password }, "backend");
       const user = await User.create({ username, email, password });
       const token = signToken(user);
       return { token, user };
     },
-    saveBook: async (parent, { bookInfo }, context) => {
+    saveBook: async (parent, { bookData }, context) => {
+      console.log(bookData);
       if (context.user) {
         // reach into mongo to find and update that user
-        const updatedUser = await User.findOneAndUpdate(
+        const updatedUser = await User.findByIdAndUpdate(
           { _id: context.user._id }, // find the user whose _id is users id
-          { $addToSet: { savedBooks: bookInfo } }, // modify the data
+          {
+            $push: { savedBooks: bookData },
+          }, // modify the data
           { new: true, runValidators: true } // some config parameters
         );
         // send a response back to the client
@@ -54,9 +58,9 @@ const resolvers = {
     },
     removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
-        const updatedUser = await User.findOneAndUpdate(
+        const updatedUser = await User.findByIdAndUpdate(
           { _id: context.user._id },
-          { $pull: { savedBooks: { bookId: bookId } } },
+          { $push: { savedBooks: { bookId: bookId } } },
           { new: true }
         );
         return updatedUser;

@@ -2,13 +2,19 @@ import { gql } from "@apollo/client";
 
 export const GET_ME = gql`
   # create a GraphQL query to be executed by Apollo Client
-  query me {
+  {
     me {
       _id
-      usename
+      username
       email
-      bookCount
-      savedBooks
+      savedBooks {
+        bookId
+        authors
+        image
+        description
+        title
+        link
+      }
     }
   }
 `;
