@@ -42,6 +42,7 @@ const resolvers = {
       return { token, user };
     },
     saveBook: async (parent, { bookData }, context) => {
+      console.log(context.user);
       if (context.user) {
         // reach into mongo to find and update that user
         const updatedUser = await User.findByIdAndUpdate(
