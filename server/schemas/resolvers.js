@@ -5,7 +5,10 @@ const { signToken } = require("../utils/auth");
 const resolvers = {
   Query: {
     me: async (parent, arg, context) => {
-      return User.fineOne({ _id: context.user._id }).populate("savedBooks");
+      if (context.user) {
+        return User.fineOne({ _id: context.user._id });
+      }
+      throw new AuthenticationError("You need to be logged in!");
     },
   },
 
