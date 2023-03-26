@@ -7,7 +7,7 @@ const {
   ApolloServerPluginDrainHttpServer,
 } = require("@apollo/server/plugin/drainHttpServer");
 const http = require("http");
-
+require("dotenv").config();
 const { authMiddleware } = require("./utils/auth");
 
 // Import the two parts of a GraphQL schema
@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../build/index.html"));
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
 // Create a new instance of an Apollo server with the GraphQL schema
