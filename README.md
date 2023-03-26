@@ -27,7 +27,7 @@
 ## DESCRIPTION
 
 <!-- ![webpage screenshot](./assets/images/webpage-screenshot.png) -->
-<img src="/assets/MERN-google-books-screenshot.png" width="600" text-align="center">
+<img src="./client/public/assets/MERN-google-books-screenshot.png" width="600" text-align="center">
 
 This is a googlebooks search engine using the MERN stack that allows you to search for books and save them to your profile.
 
