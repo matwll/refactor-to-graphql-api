@@ -33,8 +33,11 @@ This is a googlebooks search engine using the MERN stack that allows you to sear
 
 This application was built primarily utilizing the following programming languages:
 
-- HTML
+- REACT
+- EXPRESS
 - Javascript
+- MongoDB/Mongoose
+- Apollo
 
 ### Installation
 
