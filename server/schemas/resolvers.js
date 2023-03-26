@@ -6,7 +6,7 @@ const resolvers = {
   Query: {
     me: async (parent, arg, context) => {
       if (context.user) {
-        return User.fineOne({ _id: context.user._id });
+        return User.findOne({ _id: context.user._id });
       }
       throw new AuthenticationError("You need to be logged in!");
     },
